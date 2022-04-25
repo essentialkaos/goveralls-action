@@ -44,7 +44,7 @@ runs:
         go install "github.com/mattn/goveralls@v${{inputs.version}}"
         echo "::endgroup::"
 
-        cp $GOPATH/bin/goveralls ~/.cache/goveralls
+        cp "$(go env GOPATH)/bin/goveralls" ~/.cache/goveralls
 
     - id: goveralls-set-options
       name: Set Goveralls options
