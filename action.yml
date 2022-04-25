@@ -32,7 +32,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: ~/.cache/goveralls
-        key: ${{runner.os}}-goveralls-v${{inputs.version}}
+        key: ${{runner.os}}-ek-goveralls-action-v${{inputs.version}}
 
     - id: goveralls-install
       name: Install Goveralls
