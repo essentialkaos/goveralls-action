@@ -54,7 +54,8 @@ jobs:
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          profile: ${{env.SRC_DIR}}/covprofile
+          path: ${{env.SRC_DIR}}
+          profile: covprofile
 
 ```
 
