@@ -63,6 +63,7 @@ jobs:
 | Option | Description | Value |
 |--------|-------------|-------|
 | `profile` | Path to coverage profile | _Path_ |
+| `path` | Path to directory with sources | _Path_ |
 | `shallow` | Shallow coveralls internal server errors | _Boolean_ |
 | `version` | Aligo version | _Version in semver notation_ |
 

@@ -11,6 +11,10 @@ inputs:
     description: "Path to coverage profile"
     required: true
 
+  path:
+    description: "Path to directory with sources"
+    required: true
+
   version:
     description: "Version of Goveralls"
     required: false
@@ -70,4 +74,5 @@ runs:
       name: Send coverage data
       shell: bash
       run: |
+        cd ${{inputs.path}}
         ~/.cache/goveralls ${{steps.goveralls-set-options.outputs.options}}
