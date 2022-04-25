@@ -1,0 +1,73 @@
+name: "EK Goveralls"
+description: "Action for sending coverage data with goveralls"
+author: "ESSENTIALKAOS"
+
+branding:
+  icon: 'percent'
+  color: 'white'
+
+inputs:
+  profile:
+    description: "Path to coverage profile"
+    required: true
+
+  version:
+    description: "Version of Goveralls"
+    required: false
+    default: "0.0.11"
+
+  shallow:
+    description: "Shallow coveralls internal server errors"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - id: goveralls-bin-cache
+      name: Cache goveralls binaries
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/goveralls
+        key: ${{runner.os}}-goveralls-v${{inputs.version}}
+
+    - id: goveralls-install
+      name: Install Goveralls
+      if: steps.goveralls-bin-cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: |
+        echo "::group::Installing Goveralls…"
+        mkdir -p ~/.cache
+        go install "github.com/mattn/goveralls@${{inputs.version}}"
+        echo "::endgroup::"
+
+        mv $GOPATH/bin/goveralls ~/.cache/goveralls
+
+    - id: goveralls-set-options
+      name: Set Goveralls options
+      shell: bash
+      run : |
+        declare -a options
+
+        options+=("-service github")
+
+        if [[ -n "${{inputs.shallow}}" ]] ; then
+          options+=("-shallow")
+        fi
+
+        options+=("-coverprofile ${{inputs.profile}}")
+
+        echo "::group::Goveralls configuration…"
+        if [[ ${#options[@]} -eq 0 ]] ; then
+          echo "Options: -no-set-"
+        else
+          echo "Options: ${options[@]}"
+        fi
+        echo "::endgroup::"
+
+        echo "::set-output name=options::${options[@]}"
+
+    - id: goveralls-send
+      name: Send coverage data
+      shell: bash
+      run: |
+        ~/.cache/goveralls ${{steps.goveralls-set-options.outputs.options}}
