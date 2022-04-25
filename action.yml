@@ -37,7 +37,7 @@ runs:
       run: |
         echo "::group::Installing Goveralls…"
         mkdir -p ~/.cache
-        go install "github.com/mattn/goveralls@${{inputs.version}}"
+        go install "github.com/mattn/goveralls@v${{inputs.version}}"
         echo "::endgroup::"
 
         mv $GOPATH/bin/goveralls ~/.cache/goveralls
