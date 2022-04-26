@@ -34,12 +34,6 @@ jobs:
           go-version: '1.18.x'
         id: go
 
-      - name: Setup PATH
-        run: |
-          echo "GOPATH=${{ github.workspace }}" >> "$GITHUB_ENV"
-          echo "GOBIN=${{ github.workspace }}/bin" >> "$GITHUB_ENV"
-          echo "${{ github.workspace }}/bin" >> "$GITHUB_PATH"
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
