@@ -39,7 +39,9 @@ runs:
       if: steps.goveralls-bin-cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        echo "::group::Installing Goveralls…"
+        # [goveralls-install]
+
+        echo -e "::group::\e[34mInstalling Goveralls…\e[0m"
         mkdir -p ~/.cache
         go install "github.com/mattn/goveralls@v${{inputs.version}}"
         echo "::endgroup::"
@@ -50,6 +52,8 @@ runs:
       name: Set Goveralls options
       shell: bash
       run : |
+        # [goveralls-set-options]
+
         declare -a options
 
         options+=("-service github")
@@ -60,7 +64,7 @@ runs:
 
         options+=("-coverprofile ${{inputs.profile}}")
 
-        echo "::group::Goveralls configuration…"
+        echo -e "::group::\e[34mGoveralls configuration…\e[0m"
         if [[ ${#options[@]} -eq 0 ]] ; then
           echo "Options: -no-set-"
         else
@@ -74,5 +78,9 @@ runs:
       name: Send coverage data
       shell: bash
       run: |
+        # [goveralls-send]
+
+        echo -e "\e[34mSending coverage data…\e[0m"
+
         cd ${{inputs.path}}
         ~/.cache/goveralls ${{steps.goveralls-set-options.outputs.options}}
