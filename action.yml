@@ -105,7 +105,7 @@ runs:
         # [goveralls-send]
 
         if [[ -z "${{inputs.parallel-finished}}" ]] ; then
-          if [[ -z "${{inputs.flag-name}}" ]] ; then
+          if [[ -n "${{inputs.flag-name}}" ]] ; then
             echo -e "\e[34mSending coverage data (${{inputs.flag-name}})…\e[0m"
           else
             echo -e "\e[34mSending coverage data…\e[0m"
