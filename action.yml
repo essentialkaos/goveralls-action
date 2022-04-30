@@ -20,6 +20,18 @@ inputs:
     required: false
     default: "0.0.11"
 
+  parallel:
+    description: "Submit as parallel"
+    required: false
+
+  parallel-finished:
+    description: "Mark parallel test as finished"
+    required: false
+
+  flag-name:
+    description: "Job flag name (will be shown in the Coveralls UI)"
+    required: false
+
   shallow:
     description: "Shallow coveralls internal server errors"
     required: false
@@ -58,11 +70,23 @@ runs:
 
         options+=("-service github")
 
-        if [[ -n "${{inputs.shallow}}" ]] ; then
-          options+=("-shallow")
-        fi
+        if [[ -z "${{inputs.parallel-finished}}" ]] ; then
+          if [[ -n "${{inputs.parallel}}" ]] ; then
+            options+=("-parallel")
 
-        options+=("-coverprofile ${{inputs.profile}}")
+            if [[ -n "${{inputs.flag-name}}" ]] ; then
+              options+=("-flagname=${{inputs.flag-name}}")
+            fi
+          fi
+
+          if [[ -n "${{inputs.shallow}}" ]] ; then
+            options+=("-shallow")
+          fi
+
+          options+=("-coverprofile=${{inputs.profile}}")
+        else
+          options+=("-parallel-finish")
+        fi
 
         echo -e "::group::\e[34mGoveralls configuration…\e[0m"
         if [[ ${#options[@]} -eq 0 ]] ; then
@@ -80,7 +104,15 @@ runs:
       run: |
         # [goveralls-send]
 
-        echo -e "\e[34mSending coverage data…\e[0m"
+        if [[ -z "${{inputs.parallel-finished}}" ]] ; then
+          if [[ -z "${{inputs.flag-name}}" ]] ; then
+            echo -e "\e[34mSending coverage data (${{inputs.flag-name}})…\e[0m"
+          else
+            echo -e "\e[34mSending coverage data…\e[0m"
+          fi
+        else
+          echo -e "\e[34mFinishing parallel test…\e[0m"
+        fi
 
         cd ${{inputs.path}}
         ~/.cache/goveralls ${{steps.goveralls-set-options.outputs.options}}
