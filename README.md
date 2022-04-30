@@ -118,6 +118,9 @@ jobs:
 |--------|-------------|-------|
 | `profile` | Path to coverage profile | _Path_ |
 | `path` | Path to directory with sources | _Path_ |
+| `parallel` | Submit as parallel | _Boolean_ |
+| `parallel-finished` | Mark parallel test as finished | _Boolean_ |
+| `flag-name` | Job flag name (will be shown in the Coveralls UI) | _String_ |
 | `shallow` | Shallow coveralls internal server errors | _Boolean_ |
 | `version` | Aligo version | _Version in semver notation_ |
 
