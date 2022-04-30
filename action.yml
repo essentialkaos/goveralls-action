@@ -53,7 +53,7 @@ runs:
       run: |
         # [goveralls-install]
 
-        echo -e "::group::\e[34mInstalling Goveralls…\e[0m"
+        echo -e "::group::\033[34mInstalling Goveralls…\033[0m"
         mkdir -p ~/.cache
         go install "github.com/mattn/goveralls@v${{inputs.version}}"
         echo "::endgroup::"
@@ -88,7 +88,7 @@ runs:
           options+=("-parallel-finish")
         fi
 
-        echo -e "::group::\e[34mGoveralls configuration…\e[0m"
+        echo -e "::group::\033[34mGoveralls configuration…\033[0m"
         if [[ ${#options[@]} -eq 0 ]] ; then
           echo "Options: -no-set-"
         else
@@ -106,12 +106,12 @@ runs:
 
         if [[ -z "${{inputs.parallel-finished}}" ]] ; then
           if [[ -n "${{inputs.flag-name}}" ]] ; then
-            echo -e "\e[34mSending coverage data (${{inputs.flag-name}})…\e[0m"
+            echo -e "\033[34mSending coverage data (${{inputs.flag-name}})…\033[0m"
           else
-            echo -e "\e[34mSending coverage data…\e[0m"
+            echo -e "\033[34mSending coverage data…\033[0m"
           fi
         else
-          echo -e "\e[34mFinishing parallel test…\e[0m"
+          echo -e "\033[34mFinishing parallel test…\033[0m"
         fi
 
         cd ${{inputs.path}}
