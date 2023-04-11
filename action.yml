@@ -148,4 +148,8 @@ runs:
           echo "::error::Can't send coverage data: goveralls returned non-zero exit code"
         fi
 
-        echo -e "\033[32mCoverage data successfully sent\033[0m"
+        if [[ -z "${{inputs.parallel-finished}}" ]] ; then
+          echo -e "\033[32mCoverage data successfully sent\033[0m"
+        else
+          echo -e "\033[32mParallel test successfully finished\033[0m"
+        fi
