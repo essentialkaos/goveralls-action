@@ -85,6 +85,7 @@ jobs:
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          version: latest
           path: ${{env.SRC_DIR}}
           profile: covprofile
           parallel: true
@@ -102,6 +103,7 @@ jobs:
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          version: latest
           parallel-finished: true
 ```
 
