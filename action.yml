@@ -147,3 +147,5 @@ runs:
         if ! ~/.cache/goveralls ${{steps.goveralls-set-options.outputs.options}} ; then
           echo "::error::Can't send coverage data: goveralls returned non-zero exit code"
         fi
+
+        echo -e "\033[32mCoverage data successfully sent\033[0m"
