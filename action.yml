@@ -9,7 +9,7 @@ branding:
 inputs:
   profile:
     description: "Path to coverage profile"
-    required: true
+    required: false
 
   path:
     description: "Path to directory with sources"
@@ -52,7 +52,7 @@ runs:
       run: |
         # [goveralls-validate-options]
 
-        if [[ ! -f "${{inputs.profile}}" ]] ; then
+        if [[ -z "${{inputs.parallel-finished}}" && ! -f "${{inputs.profile}}" ]] ; then
           echo "::error::Profile ${{inputs.profile}} doesn't exist"
           exit 1
         fi
