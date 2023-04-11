@@ -54,12 +54,10 @@ runs:
 
         if [[ -z "${{inputs.parallel-finished}}" && ! -f "${{inputs.profile}}" ]] ; then
           echo "::error::Profile ${{inputs.profile}} doesn't exist"
-          exit 1
         fi
 
         if [[ -n "${{inputs.path}}" && ! -d "${{inputs.path}}" ]] ; then
           echo "::error::Directory ${{inputs.path}} doesn't exist"
-          exit 1
         fi
 
     - id: goveralls-install
@@ -80,7 +78,7 @@ runs:
         mkdir -p ~/.cache
         if ! go install "github.com/mattn/goveralls@$version" ; then
           echo "::endgroup::"
-          echo "::error::Can't download goveralls (version: $version)"
+          echo "::error::Can't install goveralls (version: $version)"
           exit 1
         fi
 
@@ -146,4 +144,6 @@ runs:
           cd ${{inputs.path}}
         fi
 
-        ~/.cache/goveralls ${{steps.goveralls-set-options.outputs.options}}
+        if ! ~/.cache/goveralls ${{steps.goveralls-set-options.outputs.options}} ; then
+          echo "::error::Can't send coverage data: goveralls returned non-zero exit code"
+        fi
