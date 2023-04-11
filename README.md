@@ -22,30 +22,23 @@ jobs:
     name: Go
     runs-on: ubuntu-latest
 
-    env:
-      SRC_DIR: src/github.com/${{ github.repository }}
-
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
           go-version: '1.18.x'
 
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          path: ${{env.SRC_DIR}}
-
       - name: Run tests
-        working-directory: ${{env.SRC_DIR}}
         run: go test -race -covermode atomic -coverprofile=covprofile ./...
 
       - name: Send coverage data
-        uses: essentialkaos/goveralls-action@v1
+        uses: essentialkaos/goveralls-action@v2
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: ${{env.SRC_DIR}}
           profile: covprofile
 ```
 
@@ -70,25 +63,25 @@ jobs:
 
     strategy:
       matrix:
-        go: [ '1.16.x', '1.17.x', '1.18.x' ]
+        go: [ '1.16.x', '1.17.x' ]
 
     steps:
-      - name: Set up Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: ${{ matrix.go }}
-
       - name: Checkout
         uses: actions/checkout@v3
         with:
           path: ${{env.SRC_DIR}}
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go }}
 
       - name: Run tests
         working-directory: ${{env.SRC_DIR}}
         run: go test -race -covermode atomic -coverprofile=covprofile ./...
 
       - name: Send coverage data
-        uses: essentialkaos/goveralls-action@v1
+        uses: essentialkaos/goveralls-action@v2
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -105,7 +98,7 @@ jobs:
 
     steps:
       - name: Finish parallel tests
-        uses: essentialkaos/goveralls-action@v1
+        uses: essentialkaos/goveralls-action@v2
         env:
           COVERALLS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
