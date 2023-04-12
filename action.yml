@@ -52,13 +52,20 @@ runs:
       run: |
         # [goveralls-validate-options]
 
-        if [[ -z "${{inputs.parallel-finished}}" && ! -f "${{inputs.profile}}" ]] ; then
-          echo "::error::Profile ${{inputs.profile}} doesn't exist"
-          exit 1
+        profile="${{inputs.profile}}"
+
+        if [[ -n "${{inputs.path}}" ]] ; then
+          profile="${{inputs.path}}/${{inputs.profile}}"
         fi
+
 
         if [[ -n "${{inputs.path}}" && ! -d "${{inputs.path}}" ]] ; then
           echo "::error::Directory ${{inputs.path}} doesn't exist"
+          exit 1
+        fi
+
+        if [[ -z "${{inputs.parallel-finished}}" && ! -f "$profile" ]] ; then
+          echo "::error::Profile ${{inputs.profile}} doesn't exist"
           exit 1
         fi
 
