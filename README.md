@@ -29,7 +29,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v3
         with:
-          go-version: '1.18.x'
+          go-version: '1.19.x'
 
       - name: Run tests
         run: go test -race -covermode atomic -coverprofile=covprofile ./...
@@ -63,7 +63,7 @@ jobs:
 
     strategy:
       matrix:
-        go: [ '1.16.x', '1.17.x' ]
+        go: [ '1.18.x', '1.19.x', '1.20.x' ]
 
     steps:
       - name: Checkout
