@@ -77,6 +77,7 @@ runs:
         # [goveralls-install]
 
         version=${{inputs.version}}
+        go_minor=$(go version | cut -f3 -d' ' | tr -d 'go' | cut -f2 -d'.')
 
         if [[ "$version" != "latest" ]] ; then
           version="v$version"
@@ -85,7 +86,14 @@ runs:
         echo -e "::group::\033[34mInstalling Goveralls ($version)…\033[0m"
 
         mkdir -p ~/.cache
-        if ! go install "github.com/mattn/goveralls@$version" ; then
+
+        if [[ $go_minor -ge 17 ]] ; then
+          go_cmd="install"
+        else
+          go_cmd="get"
+        fi
+
+        if ! go "$go_cmd" "github.com/mattn/goveralls@$version" ; then
           echo "::endgroup::"
           echo "::error::Can't install goveralls (version: $version)"
           exit 1
