@@ -18,7 +18,7 @@ inputs:
   version:
     description: "Version of Goveralls"
     required: false
-    default: "0.0.11"
+    default: "0.0.12"
 
   parallel:
     description: "Submit as parallel"
