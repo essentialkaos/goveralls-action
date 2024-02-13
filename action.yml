@@ -41,7 +41,7 @@ runs:
   steps:
     - id: goveralls-bin-cache
       name: Cache goveralls binaries
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/goveralls
         key: ${{runner.os}}-ek-goveralls-action-${{inputs.version}}
